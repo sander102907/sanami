@@ -1,0 +1,55 @@
+{% extends 'template_no_pr.html' %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+<h1>Create Account</h1>
+<form class="singup" method="post">
+  {% csrf_token %}
+  <div class="wrap">
+  {% for field in form%}
+    {% if forloop.counter == 1 %}
+      <div class="personal">
+        <h3>Personal data</h3>
+    {% endif %}
+    {% if forloop.counter < 7 %}
+    <p>
+      {% if field.field.required %}
+        {{ field.label_tag}}*
+      {% else %}
+        {{ field.label_tag}}
+      {% endif %}
+      <br />
+      {{ field }}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    </p>
+    {% endif %}
+    {% if forloop.counter > 6 %}
+        {% if forloop.counter == 7 %}
+      </div>
+          <div class="login">
+            <h3>Login data</h3>
+        {% endif %}
+      <p>
+        {% if field.field.required %}
+          {{ field.label_tag}}*
+        {% else %}
+          {{ field.label_tag}}
+        {% endif %}
+        <br />
+        {{ field }}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+  {% endif %}
+  {% endfor %}
+
+      </div>
+</div>
+    <p>Fields with * symbol are required</p>
+    <button class="sign-up-btn" type="submit">Sign up</button>
+</form>
+{% endblock %}

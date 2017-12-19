@@ -1,0 +1,21 @@
+{% extends 'template_no_pr.html' %}
+
+{% block content %}
+<h1>Check out</h1>
+<div class="shipping-info">
+  <p id="fisi">Your order consists of {{cart.amount}} products</p>
+  <hr />
+  <h3>Shipping Adress:</h3>
+  <p><span>City:</span> {{user.profile.city}}</p>
+  <p><span>Adress:</span> {{user.profile.adress}}</p>
+  <p><span>ZIP code:</span> {{user.profile.ZIP_code}}</p>
+  <p>Want to change your shipping adress? Go to <a href="{% url 'profile' %}">account settings</a></p>
+  <hr />
+  <p><span>Total Price:</span> &euro;{{cart.get_total_price}}</p>
+  <a href="{% url 'products:home' %}">
+    <div class="pay">
+      Payment
+    </div>
+  </a>
+</div>
+{% endblock %}

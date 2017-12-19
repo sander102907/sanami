@@ -1,0 +1,95 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+<div class="filter-button">
+  <span><i class="fa fa-angle-double-right" style="font-size:30px"></i></span>
+</div>
+<div class="filter hide">
+  <h2>Filters</h2>
+  <i class="material-icons" id="closefilter" style="font-size:26px;color:lightgrey">close</i>
+  <hr>
+  <p>Price:<p>
+  <form action="{% url 'products:price_filter_product_list' %}" method="get" class="price-filter">
+    &euro; <input type="text" name="min_price" maxlength="3" placeholder="1">
+    to <input type="text" name="max_price" maxlength="3" placeholder="999">
+    <input type="submit", value="&#xf054;", name="mybtn" class="filterbtn">
+  </form>
+  <hr>
+</div>
+<h1>All products</h1>
+<p>Welcome to this clothing webshop, where you can find clothes and shoes for both men & woman in all sizes</p>
+<div class="products">
+    {% for product in products %}
+      {% if product.clothingtype == "SHOE" %}
+        <div class="item">
+          <a href="#">
+          <div class="information">
+            <img class="product-image" src="{{product.image.url}}" alt="Picture of sneaker">
+            <h2 id="name-product">{{product.name}}</h2>
+            <i class="material-icons more-info" style="font-size:37px;">keyboard_arrow_right</i>
+            <p>
+              <span class="currencysign">&euro;</span><span class="price">{{product.price}}</span>
+            </p>
+          </div>
+          </a>
+          <div class="extra-info">
+            <div class="border">
+              <form action="{% url 'products:cart_add' product.id %}" method="post" class="addCartForm">
+               {% csrf_token %}
+               {% for field in shoe_form %}
+                {% if forloop.counter != 1 %}
+                  <div class="hidden">
+                    {{ field }}
+                  </div>
+                {% else %}
+                  <p>
+                    {{ field.label_tag}}
+                    {{ field }}
+                  </p>
+                {% endif %}
+               {% endfor %}
+               <button type="submit" class="cartbtn">Add to cart <i class="fa fa-shopping-bag"></i></button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+      {% endif%}
+      {% if product.clothingtype == "CLOTHING" %}
+      <div class="item">
+        <a href="#">
+        <div class="information">
+          <img class="product-image" src="{{product.image.url}}" alt="Picture of sneaker">
+          <h2 id="name-product">{{product.name}}</h2>
+          <i class="material-icons more-info" style="font-size:37px;">keyboard_arrow_right</i>
+          <p>
+            <span class="currencysign">&euro;</span><span class="price">{{product.price}}</span>
+          </p>
+        </div>
+        </a>
+        <div class="extra-info">
+          <div class="border">
+            <form action="{% url 'products:cart_add' product.id %}" method="post" class="addCartForm">
+             {% csrf_token %}
+             {% for field in cloth_form %}
+              {% if forloop.counter != 1 %}
+                <div class="hidden">
+                  {{ field }}
+                </div>
+              {% else %}
+                <p>
+                  {{ field.label_tag}}
+                  {{ field }}
+                </p>
+              {% endif %}
+             {% endfor %}
+             <button type="submit" class="cartbtn">Add to cart <i class="fa fa-shopping-bag"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

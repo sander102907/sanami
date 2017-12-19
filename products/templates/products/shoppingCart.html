@@ -1,0 +1,161 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SANAMI</title>
+    <link href="{%static 'CSS/main.css'%}" rel="stylesheet" type="text/css">
+    <link href="{%static 'CSS/shoppingcart.css'%}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+      type="image/icon"
+      href="{% static 'Images/logo.ico' %}">
+  </head>
+
+  <body>
+        <nav>
+            <ul>
+              <li id="home-button"><a href="{% url 'products:home' %}">SANAMI</a></li>
+              <div class="right-buttons">
+                <li id="currency">&euro;<i class="material-icons currencyarrow">keyboard_arrow_down</i></li>
+                <span class="tooltip hide">Currency changed to </span>
+                <div class="currencyMenu hide">
+                  <ul>
+                    <li id="dollar">&dollar;</li>
+                    <li id="pound">&pound;</li>
+                  </ul>
+                </div>
+                <li id="menu-button"><span id="button-text">Menu</span> <i class="fa fa-bars phone"></i></li>
+                <li id="user-button">
+                  {% if not request.user.is_authenticated %}
+                    <span id="button-text">Account</span>
+                  {% else %}
+                    <span id="button-text">{{user.username}}</span>
+                  {% endif %}
+                  <i class="fa fa-user-circle-o"></i></li>
+                <div class="user-form hide">
+                  {% if not request.user.is_authenticated %}
+                  <h2>Log into account</h2>
+                  <form class="user-login-form" method="POST" action="{% url 'login' %}">{% csrf_token %}
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="username" placeholder="Username" />
+                      <input type="password" class="form-control" name="password" placeholder="Password" />
+                    </div>
+                    <button type="submit" class="button">Login</button>
+                    <p>New customer?</p>
+                    <a href="{% url 'signup' %}"><button type="button">Create Account</button></a>
+                  </form>
+                  {% else %}
+                  <div class="logged-in">
+                  <h2>Welcome back</h2>
+                  <p>{% if user.first_name %}{{user.first_name}}{% else %}{{user.username}}{% endif %}</p>
+                  <a href="{% url 'profile' %}"><button>Account Settings</button></a>
+                  <a href="{% url 'logout' %}"><button>Log out</button></a>
+                  </div>
+                  {% endif %}
+                </div>
+                <li id="icon"><i class="fa fa-shopping-bag"><div class="counter">{{cart.amount}}</div></i></li>
+                <div class="tooltip hide">1 item added to your shoppingcart</div>
+                <div class="cartoverview hide">
+                  <h3>Shopping Cart</h3>
+                  There are currently <span id="amount">{{cart.amount}}</span> item(s) in your shopping bag. <br /><br /> Price: <span class="currencysign">&euro;</span><span class="price">{{cart.get_total_price}}</span>
+                  <a href="{% url 'products:shoppingcart' %}"><button>Check out</button></a>
+                </div>
+              </div>
+            </ul>
+      </nav>
+
+    <div class="menu hide">
+      <div class="menu-container">
+        <div>
+          <ul class="left">
+            <li>Clothes</li>
+            <a href="{% url 'products:menclothes' %}"><li>Men's clothes</li></a>
+            <a href="{% url 'products:womenclothes' %}"><li>Women's clothes</li></a>
+          </ul>
+        </div>
+        <div>
+          <ul class="left">
+            <li>Shoes</li>
+            <a href="{% url 'products:menshoes' %}"><li>Men's shoes</li></a>
+            <a href="{% url 'products:womenshoes' %}"><li>Women's shoes</li></a>
+          </ul>
+        </div>
+        <div>
+          <ul class="right">
+            <li>Contact</li>
+            <a href="https://www.facebook.com" target="_blank"><li>Facebook <i class="fa fa-facebook-square" style="color:white"></i></li></a>
+            <a href="https://www.instagram.com" target="_blank"><li>Instagram <i class="fa fa-instagram" style="color:white"></i></li></a>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="contents">
+      <h1>Your Shopping Cart</h1>
+        <div class="cartinventory">
+          <h3>You currently have {{cart.amount}} item(s) in your shopping cart:</h3>
+          {% if cart.amount > 0 %}
+          <table>
+            {% for item in cart %}
+              {% with product=item.product %}
+                <tr>
+                  <td><p class="name">{{ product.name }}</p><p>Size: {{item.size}}</p></td>
+                  <td><img class="product-image" src="{{ product.image.url }}" alt="Picture of sneaker"></td>
+                  <td>
+                    <form action="{% url 'products:cart_add' product.id %}" method="post">
+                      Quantity:
+                      {% if product.clothingtype == "CLOTHING"%}
+                        {{ item.update_quantity_cloth_form.quantity }}
+                        <br /><br />
+                        Size:
+                        {{ item.update_quantity_cloth_form.size }}
+                        {{ item.update_quantity_cloth_form.update }}
+                      {% else %}
+                        {{ item.update_quantity_shoe_form.quantity }}
+                        <br /><br />
+                        Size:
+                        {{ item.update_quantity_shoe_form.size }}
+                        {{ item.update_quantity_shoe_form.update }}
+                      {% endif %}
+                      <br /><br />
+                      <button type="submit">Update</button>
+                      {% csrf_token %}
+                    </form>
+                  </td>
+                  <td>Product price:<span class="currencysign">&euro;</span><span class="price">{{ item.price }}</span></td>
+                  <td>Price: <span class="currencysign">&euro;</span><span class="price">{{ item.total_price }}</span></td>
+                  <td><a id="deleteproduct" href="{% url "products:cart_remove" product.id %}"><i class="fa fa-remove" style="font-size:28px;"></i></a><td>
+                </tr>
+              {% endwith %}
+            {% endfor %}
+          </table>
+          <div class="costs">
+            <div>Total<span></span><span class="cost">  <span class="currencysign">&euro;</span><span class="price" id="subTotal">{{cart.get_total_price}}</span></div>
+          </div>
+          <a href="{% url 'products:checkout' %}">
+            <div class="check-out">
+              <span>Check out<span>
+            </div>
+          </a>
+          {% else %}
+            <p>You have no products in your shopping cart.</p>
+            <a href="{% url 'products:home' %}">
+              <div class="check-out">
+                <span>Go to Shop<span>
+              </div>
+            </a>
+          {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <p>Copyright &#9400;</p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{%static '/js/main.js'%}" type = "text/javascript"></script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+{% load static from staticfiles %}
+
+.wrapbutton {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.go-to-shop-button {
+  width: 200px;
+  display: inline-block;
+  margin: 0 auto;
+  background-color: black;
+  color: white;
+  text-transform: uppercase;
+  padding: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 500px;
+  font-size: 24px;
+}
+
+.go-to-shop-button:hover {
+  color: lightgrey;
+}
+
+.contents {
+  background: url('../Images/intro.jpg') 50% 10%  fixed;
+  margin-bottom: 0px;
+  color: white;
+  padding-top: 80px;
+  min-height: calc(100vh - 80px);
+}
+
+
+.contents p {
+  font-size: 24px;
+}
+
+.contents h1 {
+  text-align: center;
+  font-size: 45px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  letter-spacing: 5px;
+}
+
+footer p {
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 768px) {
+
+  .go-to-shop-button {
+      margin-top: 270px;
+    }
+
+}

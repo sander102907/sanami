@@ -1,0 +1,32 @@
+{% extends 'template_no_pr.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+<div class="message" id="profile-updated">
+    {{ message }}
+    <a href="#" class="del-msg">&times;</a>
+</div>
+{% endfor %}
+<h1>Account settings</h1>
+<form class="profile-form" method="post">
+  {% csrf_token %}
+  {% for field in user_form %}
+    <p>{{field.label}}</p>
+    <p>{{field}}</p>
+    {% for error in field.errors %}
+      <p style="color: red">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+  {% for field in profile_form %}
+    <p>{{field.label}}</p>
+    <p>{{field}}</p>
+    {% for error in field.errors %}
+      <p style="color: red">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+  <button type="submit" class="save">Save changes</button>
+</form>
+
+{% endblock %}
