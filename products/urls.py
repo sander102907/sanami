@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^add/(?P<product_id>\d+)/$', views.cart_add, name='cart_add'),
     url(r'^remove/(?P<product_id>\d+)/$', views.cart_remove, name='cart_remove'),
     url(r'^checkout/$', views.checkout, name="checkout"),
+    url(r'^checkoutnext/$', views.checkoutnext, name="checkoutnext"),
     url(r'^price_filter/$', views.price_filter_product_list, name="price_filter_product_list"),
     url(r'^price_filter_men_clothes/$', views.price_filter__men_clothes, name="price_filter__men_clothes"),
     url(r'^price_filter_men_shoes/$', views.price_filter_men_shoes, name="price_filter_men_shoes"),

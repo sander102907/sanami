@@ -875,13 +875,13 @@ i {
     }
 
     nav li {
-      font-size: 34px;
-      padding: 14px 12px;
+      font-size: 30px;
+      padding: 14px 10px;
     }
 
     #icon {
       position: relative;
-      top: -3px;
+      top: -2px;
       right: 5px;
     }
 
@@ -899,14 +899,14 @@ i {
     }
 
     nav .fa {
-      font-size: 35px !important;
+      font-size: 32px !important;
     }
 
     .counter {
       width: 18px;
       height: 18px;
-      right: 8px;
-      top: 40px;
+      right: 5px;
+      top: 37px;
       font-size: 17px;
     }
 

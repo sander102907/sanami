@@ -95,6 +95,12 @@
     </div>
 
     <div class="contents">
+      {% for message in messages %}
+      <div class="message">
+          {{ message }}
+          <a href="#" class="del-msg">&times;</a>
+      </div>
+      {% endfor %}
       <h1>Your Shopping Cart</h1>
         <div class="cartinventory">
           <h3>You currently have {{cart.amount}} item(s) in your shopping cart:</h3>

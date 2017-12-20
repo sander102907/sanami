@@ -54,3 +54,6 @@ class CartShoeAddForm(forms.Form):
     update = forms.BooleanField(required=False,
                                 initial=False,
                                 widget=forms.HiddenInput)
+
+class CheckOutForm(forms.Form):
+    clicked = forms.BooleanField(initial=True, widget=forms.HiddenInput)

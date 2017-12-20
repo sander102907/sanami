@@ -5,7 +5,7 @@ from django.views import generic
 from django.views.generic import View
 from django.views.decorators.http import require_POST
 from .cart import Cart
-from .forms import CartClothAddForm, CartShoeAddForm
+from .forms import CartClothAddForm, CartShoeAddForm, CheckOutForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -143,7 +143,17 @@ def price_filter_men_shoes(request):
 @login_required
 def checkout(request):
     cart = Cart(request)
-    return render(request, 'products/checkout.html', {'cart': cart})
+    form = CheckOutForm()
+    return render(request, 'products/checkout.html', {'cart': cart, 'form':form})
+
+def checkoutnext(request):
+    cart = Cart(request)
+    form = CheckOutForm(request.POST)
+    if form.is_valid():
+        cart.clear()
+        messages.info(request, 'Thank you for your order!')
+    return redirect('products:home')
+
 
 @require_POST
 def cart_add(request, product_id):
@@ -159,7 +169,10 @@ def cart_add(request, product_id):
                  size=cd['size'],
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
-        messages.info(request, 'Product has been added to your shopping cart.')
+        if cd['update']:
+            messages.info(request, 'Your shoppingcart has been updated')
+        else:
+            messages.info(request, 'Product has been added to your shopping cart.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 

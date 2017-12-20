@@ -12,10 +12,10 @@
   <p>Want to change your shipping adress? Go to <a href="{% url 'profile' %}">account settings</a></p>
   <hr />
   <p><span>Total Price:</span> &euro;{{cart.get_total_price}}</p>
-  <a href="{% url 'products:home' %}">
-    <div class="pay">
-      Payment
-    </div>
-  </a>
+  <form action="{% url 'products:checkoutnext' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save" name="button">Payment</button>
+  </form>
 </div>
 {% endblock %}
