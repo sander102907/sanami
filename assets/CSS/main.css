@@ -982,6 +982,24 @@ i {
     }
 }
 
+@media only screen and (max-width: 385px) {
+  /* for very small mobiel phone screens eg iphone 5 */
+  nav {
+    height: 50px;
+  }
+
+  nav li {
+    font-size: 26px;
+    padding: 14px 8px;
+  }
+
+  nav .fa {
+    font-size: 29px !important;
+  }
+
+
+}
+
 footer {
   color: white;
   text-align: center;
